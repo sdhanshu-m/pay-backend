@@ -6,18 +6,30 @@ import paymentRoutes from "./routes/payment.routes.js";
 
 const app = express();
 
-app.use(cors({
-  origin: true,
-  credentials: true,
-}));
+// ✅ CORS (PRODUCTION SAFE)
+app.use(
+  cors({
+    origin: ["http://localhost:5173"], // your frontend
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 
+// ✅ HANDLE PREFLIGHT (IMPORTANT)
+app.options("*", cors());
+
+// ✅ JSON parser
 app.use(express.json());
 
-app.use("/api/payment/webhook", express.raw({ type: "application/json" }));
+// ✅ WEBHOOK (raw body ONLY here)
+app.use(
+  "/api/payment/webhook",
+  express.raw({ type: "application/json" })
+);
 
 // health
 app.get("/", (req, res) => {
-  res.send("API running");
+  res.send("API running bruddda");
 });
 
 // routes
