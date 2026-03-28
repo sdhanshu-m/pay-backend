@@ -1,6 +1,7 @@
+import jwt from "jsonwebtoken";
+
 export const protect = (req, res, next) => {
   console.log("---- REQUEST HIT ----");
-
   console.log("AUTH HEADER:", req.headers.authorization);
 
   try {
@@ -9,7 +10,6 @@ export const protect = (req, res, next) => {
     console.log("TOKEN:", token);
 
     if (!token) {
-      console.log("NO TOKEN");
       return res.status(401).json({ message: "Unauthorized" });
     }
 
